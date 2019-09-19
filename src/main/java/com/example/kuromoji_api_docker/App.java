@@ -1,8 +1,8 @@
 package com.example.kuromoji_api_docker;
 
 import com.atilika.kuromoji.TokenizerBase;
-import com.atilika.kuromoji.ipadic.Token;
-import com.atilika.kuromoji.ipadic.Tokenizer;
+import com.atilika.kuromoji.unidic.Token;
+import com.atilika.kuromoji.unidic.Tokenizer;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
