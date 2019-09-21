@@ -1,2 +1,8 @@
 src-kuromoji/
 target/
+libs/*
+!libs/.keep
+.classpath
+.project
+.settings/
+.vscode/

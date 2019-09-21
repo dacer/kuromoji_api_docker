@@ -1,18 +1,16 @@
 package com.example.kuromoji_api_docker;
 
-import com.atilika.kuromoji.TokenizerBase;
-import com.atilika.kuromoji.unidic.Token;
-import com.atilika.kuromoji.unidic.Tokenizer;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import java.util.List;
-import java.util.Objects;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.atilika.kuromoji.unidic.neologd.Token;
+import com.atilika.kuromoji.unidic.neologd.Tokenizer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class App 
@@ -22,21 +20,7 @@ public class App
       public String mode;
     }
 
-    private static Tokenizer normalTokenizer = new Tokenizer.Builder().mode(TokenizerBase.Mode.NORMAL).build();
-    private static Tokenizer searchTokenizer = new Tokenizer.Builder().mode(TokenizerBase.Mode.SEARCH).build();
-    private static Tokenizer extendedTokenizer = new Tokenizer.Builder().mode(TokenizerBase.Mode.EXTENDED).build();
     private static ObjectMapper mapper = new ObjectMapper();
-
-    private static Tokenizer getTokenizer(String mode) {
-        switch (Objects.toString(mode, "").toLowerCase()) {
-            case "extended":
-                return extendedTokenizer;
-            case "search":
-                return searchTokenizer;
-            default:
-                return normalTokenizer;
-        }
-    }
 
     protected static String convert(Tokenizer tokenizer, String body) throws JsonProcessingException
     {
@@ -83,7 +67,7 @@ public class App
                             (fullByteExchange, data) -> {
                                 try {
                                     PostRequestBody requestBody = mapper.readValue(new String(data), PostRequestBody.class);
-                                    String outputJson = convert(getTokenizer(requestBody.mode), requestBody.body);
+                                    String outputJson = convert(new Tokenizer(), requestBody.body);
                                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
                                     exchange.getResponseSender().send(outputJson);
                                 } catch (IOException e) {

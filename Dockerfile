@@ -10,6 +10,7 @@ COPY ./pom.xml ./pom.xml
 RUN mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
 
 COPY ./src ./src
+COPY ./libs ./libs
 
 RUN mvn clean package -Dbuild=full && cp ./target/uber-*.jar ./run.jar
 
